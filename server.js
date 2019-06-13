@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const helmet = require('helmet');
+const path = require('path');
 
 const binanceSvc = require('./services/binance.js');
 const encryptionSvc = require('./services/encryption.js');
@@ -27,7 +28,6 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(compression());
 app.use(helmet());
-app.set('view engine', 'ejs');
 
 const asyncMiddleware = fn =>
   (req, res, next) => {
@@ -35,10 +35,8 @@ const asyncMiddleware = fn =>
       .catch(next);
   };
 
-app.use('/', express.static(__dirname + '/public'));
-
 app.get('/', function(req, res) {
-  res.render('index');
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 app.get('/api/binance/', asyncMiddleware(async function(req, res, next){
