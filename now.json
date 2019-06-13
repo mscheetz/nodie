@@ -1,0 +1,11 @@
+{
+  "builds": [
+    { "src": "*.html", "use": "@now/static" },
+    { "src": "server.js", "use": "@now/node", "config": {
+    	"includeFiles": [
+    		"services/**",
+    		"views/**"
+    	]
+    } }
+  ]
+}
