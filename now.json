@@ -10,6 +10,6 @@
   	{ "src": "/api/binance/info", "dest": "server.js" },
   	{ "src": "/api/binance/symbols", "dest": "server.js" },
   	{ "src": "/api/binance/tickers", "dest": "server.js" },
-  	{ "src": "/api/binance/klines/(?<pair>[^/]*/(?<interval>[^/]*", "dest": "server.js" },
+  	{ "src": "/api/binance/klines/(?<pair>[^/]*/(?<interval>[^/]*", "dest": "server.js" }
   ]
 }
