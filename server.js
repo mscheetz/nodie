@@ -39,17 +39,21 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+app.get('/api', asyncMiddleware(async function(req, res, next){
+  	res.status(200).json({'about': 'Nodie\'s apis are nested under here'});
+}));
+
 app.get('/api/binance/', asyncMiddleware(async function(req, res, next){
-  //if(!this.headerCheck(req)) {
-  //  res.status(400).json('Invalid request');
-  //} else {
+  if(!this.headerCheck(req)) {
+    this.errorResponse(res);
+  } else {
   	res.status(200).json({'about': 'Collection of binance api calls'});
-  //}
+  }
 }));
 
 app.get('/api/binance/info', asyncMiddleware(async function(req, res, next){
   if(!this.headerCheck(req)) {
-    res.status(400).json('Invalid request');
+    this.errorResponse(res);
   } else {
 	 res.status(200).json(await binanceSvc.getExchangeInfo());
   }
@@ -57,7 +61,7 @@ app.get('/api/binance/info', asyncMiddleware(async function(req, res, next){
 
 app.get('/api/binance/symbols', asyncMiddleware(async function(req, res, next){
   if(!this.headerCheck(req)) {
-    res.status(400).json('Invalid request');
+    this.errorResponse(res);
   } else {
   	const data = await binanceSvc.getExchangeInfo();
   	res.status(200).json(data.symbols);
@@ -66,7 +70,7 @@ app.get('/api/binance/symbols', asyncMiddleware(async function(req, res, next){
 
 app.get('/api/binance/tickers', asyncMiddleware(async function(req, res, next){
   if(!this.headerCheck(req)) {
-    res.status(400).json('Invalid request');
+    this.errorResponse(res);
   } else {
 	 res.status(200).json(await binanceSvc.getTickers());
   }
@@ -74,7 +78,7 @@ app.get('/api/binance/tickers', asyncMiddleware(async function(req, res, next){
 
 app.get('/api/binance/klines/:pair/:interval', asyncMiddleware(async function(req, res, next){
   if(!this.headerCheck(req)) {
-    res.status(400).json('Invalid request');
+    this.errorResponse(res);
   } else {
   	const pair = req.params['pair'].toUpperCase();
   	const interval = req.params['interval'];
@@ -84,6 +88,10 @@ app.get('/api/binance/klines/:pair/:interval', asyncMiddleware(async function(re
 }));
 
 const whitelistUsers = new Map([['volitility-d', 'b59e052f-891d-45be-b316-0c22b561bb11'],['volitility-p', 'e64b33f6-54af-4303-9e6e-cc390d2add10']]);
+
+errorResponse = function(res) {
+	return res.status(400).json({'code': 400, 'message': 'You said whaaaaaa??'});
+}
 
 headerCheck = function(req) {
     let ip = req.socket.remoteAddress;
