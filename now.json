@@ -9,6 +9,11 @@
     "src": "/example",
     "dest": "/index.html",
     "status": 200
+  },
+  {
+  	"src": "/api/binance",
+  	"dest": "/server.js",
+  	"methods": ["GET"]
   }
 ]
 }

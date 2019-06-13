@@ -40,11 +40,11 @@ app.get('/', function(req, res) {
 });
 
 app.get('/api/binance/', asyncMiddleware(async function(req, res, next){
-  if(!this.headerCheck(req)) {
-    res.status(400).json('Invalid request');
-  } else {
+  //if(!this.headerCheck(req)) {
+  //  res.status(400).json('Invalid request');
+  //} else {
   	res.status(200).json({'about': 'Collection of binance api calls'});
-  }
+  //}
 }));
 
 app.get('/api/binance/info', asyncMiddleware(async function(req, res, next){
