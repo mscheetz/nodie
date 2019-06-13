@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     { "src": "index.html", "use": "@now/static" },
-    { "src": "server.js", "use": "@now/node-server@0.4.26" }
+    { "src": "server.js", "use": "@now/node-server" }
   ],
   "routes": [
   {
@@ -11,9 +11,12 @@
     "status": 200
   },
   {
-  	"src": "/api/binance",
-  	"dest": "server.js",
-  	"methods": ["GET"]
-  }
-]
+    "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, Content-Type, Accept"
+    },
+    "src": "/.*",
+    "dest": "/index.js"
+  }]
 }
