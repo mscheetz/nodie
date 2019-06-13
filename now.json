@@ -3,12 +3,5 @@
   "builds": [
     { "src": "index.html", "use": "@now/static" },
     { "src": "*.js", "use": "@now/node" }
-  ],
-  "routes": [
-  	{ "src": "/api/binance", "dest": "server.js" },
-  	{ "src": "/api/binance/info", "dest": "server.js" },
-  	{ "src": "/api/binance/symbols", "dest": "server.js" },
-  	{ "src": "/api/binance/tickers", "dest": "server.js" },
-  	{ "src": "/api/binance/klines/(?<pair>[^/]*/(?<interval>[^/]*", "dest": "server.js" }
   ]
 }
