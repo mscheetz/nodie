@@ -3,5 +3,12 @@
   "builds": [
     { "src": "index.html", "use": "@now/static" },
     { "src": "*.js", "use": "@now/node" }
-  ]
+  ],
+  "routes": [
+  {
+    "src": "/example",
+    "dest": "/index.html",
+    "status": 200
+  }
+]
 }
