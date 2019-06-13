@@ -12,7 +12,7 @@
   },
   {
   	"src": "/api/binance",
-  	"dest": "/server.js",
+  	"dest": "server.js",
   	"methods": ["GET"]
   }
 ]
