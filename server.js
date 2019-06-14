@@ -43,51 +43,81 @@ app.get('/api', asyncMiddleware(async function(req, res, next){
   	res.status(200).json({'about': 'Nodie\'s apis are nested under here'});
 }));
 
-app.get('/api/binance/', asyncMiddleware(async function(req, res, next){
+app.get('/api/exchange/', asyncMiddleware(async function(req, res, next){
   if(!this.headerCheck(req)) {
     this.errorResponse(res);
   } else {
-  	res.status(200).json({'about': 'Collection of binance api calls'});
+  	res.status(200).json({'about': 'Collection of exchange api calls'});
   }
 }));
 
-app.get('/api/binance/info', asyncMiddleware(async function(req, res, next){
+app.get('/api/exchange/info/:exchange', asyncMiddleware(async function(req, res, next){
+  const exchange = req.params.exchange;
   if(!this.headerCheck(req)) {
     this.errorResponse(res);
+  } else if (!this.exchangeCheck(exchange)) {
+    this.noExchangeResponse(res);
   } else {
-	 res.status(200).json(await binanceSvc.getExchangeInfo());
+    console.log('valid exchange: ' + exchange);
+    const result = exchange === "binance" ? await binanceSvc.getExchangeInfo() : {};
+
+	  res.status(200).json(result);
   }
 }));
 
-app.get('/api/binance/symbols', asyncMiddleware(async function(req, res, next){
+app.get('/api/exchange/symbols/:exchange', asyncMiddleware(async function(req, res, next){
+  const exchange = req.params.exchange;
   if(!this.headerCheck(req)) {
     this.errorResponse(res);
+  } else if (!this.exchangeCheck(exchange)) {
+    this.noExchangeResponse(res);
   } else {
-  	const data = await binanceSvc.getExchangeInfo();
-  	res.status(200).json(data.symbols);
+  	const result = exchange === "binance" ? await binanceSvc.getPairs() : {};
+
+  	res.status(200).json(result);
   }
 }));
 
-app.get('/api/binance/tickers', asyncMiddleware(async function(req, res, next){
+app.get('/api/exchange/tickers/:exchange', asyncMiddleware(async function(req, res, next){
+  const exchange = req.params.exchange;
   if(!this.headerCheck(req)) {
     this.errorResponse(res);
+  } else if (!this.exchangeCheck(exchange)) {
+    this.noExchangeResponse(res);
   } else {
-	 res.status(200).json(await binanceSvc.getTickers());
+    const result = exchange === "binance" ? await binanceSvc.getTickers() : {};
+
+	 res.status(200).json(result);
   }
 }));
 
-app.get('/api/binance/klines/:pair/:interval', asyncMiddleware(async function(req, res, next){
+app.get('/api/exchange/klines/:exchange/:pair/:interval', asyncMiddleware(async function(req, res, next){
+  const exchange = req.params.exchange;
   if(!this.headerCheck(req)) {
     this.errorResponse(res);
+  } else if (!this.exchangeCheck(exchange)) {
+    this.noExchangeResponse(res);
   } else {
-  	const pair = req.params['pair'].toUpperCase();
-  	const interval = req.params['interval'];
+  	const pair = req.params.pair.toUpperCase();
+  	const interval = req.params.interval;
+    const result = exchange === "binance" ? await binanceSvc.getKlines(pair, interval) : {};
 
-  	res.status(200).json(await binanceSvc.getKlines(pair, interval));
+  	res.status(200).json(result);
   }
 }));
 
 const whitelistUsers = new Map([['volitility-d', 'b59e052f-891d-45be-b316-0c22b561bb11'],['volitility-p', 'e64b33f6-54af-4303-9e6e-cc390d2add10']]);
+
+exchangeCheck = function(exchange) {
+  if(typeof exchange === 'undefined' || exchange === "") {
+    return false;
+  }
+  return true;
+}
+
+noExchangeResponse = function(res) {
+    return res.status(400).json({'code': 400, 'message': 'You forgot an exchange...'});
+}
 
 errorResponse = function(res) {
 	return res.status(400).json({'code': 400, 'message': 'You said whaaaaaa??'});
