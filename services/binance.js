@@ -22,9 +22,9 @@ const getPairs = async () => {
 
 	try {
 		const response = await axios.get(url);
-		const datas = response.data.symols;
+		const datas = response.data.symbols;
 		const symbols = [];
-		datas.foreach(data => {
+		datas.forEach(data => {
 			symbols.push({
 				pair: data.symbol,
 				asset: data.baseAsset,
@@ -42,10 +42,10 @@ const getTickers = async () => {
     let url = binanceBase + endpoint;
 
 	try {
-		const response = await axios.get(url);
+		const response = await axios.get(url);		
 		const datas = response.data;
 		const tickers = [];
-		datas.foreach(data => {
+		datas.forEach(data => {
 			tickers.push({
 				pair: data.symbol,
 				percent24h: data.priceChangePercent,
@@ -72,7 +72,7 @@ const getKlines = async (pair, interval) => {
 		const response = await axios.get(url);
 		const datas = response.data;
 		const klines = [];
-		datas.foreach(data => {
+		datas.forEach(data => {
 			klines.push({
 				open: data[1],
 				close: data[4],
@@ -93,6 +93,7 @@ const getKlines = async (pair, interval) => {
 
 module.exports = {
 	getExchangeInfo,
+	getPairs,
 	getTickers,
 	getKlines
 }
